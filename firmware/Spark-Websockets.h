@@ -53,7 +53,7 @@ public:
   bool send(char* message);
 private:
   const char* _hostname;
-  const IPAddress _ip;
+  IPAddress _ip;
   int _port;
   const char* _path;
   const char* _protocol;
