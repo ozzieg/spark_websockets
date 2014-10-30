@@ -97,8 +97,9 @@ const char *WebSocketClientStringTable = {
 
 
 
-void WebSocketClient::connect(const char hostname[], int port, const char protocol[], const char path[]) {
+void WebSocketClient::connect(const char hostname[], const IPAddress ip, int port, const char protocol[], const char path[]) {
   _hostname = hostname;
+  _ip = ip;
   _port = port;
   _protocol = protocol;
   _path = path;
@@ -108,7 +109,12 @@ void WebSocketClient::connect(const char hostname[], int port, const char protoc
 
 void WebSocketClient::reconnect() {
   bool result = false;
-  if (_client.connect(_hostname, _port)) {
+  if( _ip != null ) {
+    result = _client.connect(_ip, _port);
+  } else {
+    result = _client.connect(_hostname, _port);    
+  }
+  if (result) {
     sendHandshake(_hostname, _path, _protocol);
     result = readHandshake();
   }
